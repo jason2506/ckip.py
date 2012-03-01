@@ -1,8 +1,8 @@
 # CKIP.py
 
-**CKIP.py** is a simple interface for the Chinese segmentation service that provided by [CKIP](http://ckipsvr.iis.sinica.edu.tw/).
+**CKIP.py** is a simple interface for the Chinese segmentation service that provided by [CKIP](http://ckip.iis.sinica.edu.tw/CKIP/index.htm).
 
-To access CKIP service, you must [register first](http://ckipsvr.iis.sinica.edu.tw/reg.php).
+To access the Chinese segmentation service, you must [register first](http://ckipsvr.iis.sinica.edu.tw/reg.php).
 
 ## Usage
 
