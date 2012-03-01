@@ -34,7 +34,6 @@ class CKIPClient(object):
             while not done:
                 chunk = s.recv(self.__BUFFER_SIZE)
                 result += chunk
-                print chunk
                 done = result.find('</wordsegmentation>') > -1
 
         return result
@@ -56,7 +55,6 @@ class CKIPClient(object):
         msg = tostring(tree, encoding=self.__ENCODING, xml_declaration=True)
 
         result_msg = self.__send_and_recv(msg)
-        print result_msg
         result_tree = fromstring(result_msg.decode(self.__ENCODING))
 
         status = result_tree.find('./processstatus')
