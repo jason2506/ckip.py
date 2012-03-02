@@ -92,7 +92,7 @@ class CKIPSegmenter(CKIPClient):
     _SERVER_PORT = 1501
 
     def _extract_sentence(self, sentence):
-        pattern = compile('^(.*)\(([^(]+)\)$')
+        pattern = compile('^(.+)\(([^(]+)\)$')
         raw_terms = sentence.split()
 
         terms = []
