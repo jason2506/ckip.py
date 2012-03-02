@@ -180,7 +180,10 @@ class CKIPParser(CKIPClient):
         if len(raw_punctuation) > 0:
             pattern = compile('^(.+)\(([^(]+)\)$')
             match = pattern.match(raw_punctuation)
-            punctuation = (match.group(1), match.group(2))
+            punctuation = {
+                'term': match.group(1),
+                'pos': match.group(2)
+            }
 
         result = {
             'tree': tree,
