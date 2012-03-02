@@ -98,7 +98,11 @@ class CKIPSegmenter(CKIPClient):
         terms = []
         for raw_term in raw_terms:
             match = pattern.match(raw_term)
-            term = (match.group(1), match.group(2))
+            term = {
+                'term': match.group(1),
+                'pos': match.group(2)
+            }
+
             terms.append(term)
 
         return terms
