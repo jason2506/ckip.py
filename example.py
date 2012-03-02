@@ -26,11 +26,25 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from ckip import CKIPSegmenter
+from ckip import CKIPSegmenter, CKIPParser
 
-client = CKIPSegmenter('YOUR USERNAME', 'YOUR PASSWORD')
-result = client.process(u'這是一隻可愛的小花貓')
+def traverse(node):
+    if 'child' in node:
+        for child in node['child']:
+            for leaf in traverse(child):
+                yield leaf
+    else:
+        yield node
+
+segmenter = CKIPSegmenter('YOUR USERNAME', 'YOUR PASSWORD')
+result = segmenter.process(u'這是一隻可愛的小花貓')
 for sentence in result['result']:
     for term in sentence:
+        print term['term'], term['pos']
+
+segmenter = CKIPSegmenter('YOUR USERNAME', 'YOUR PASSWORD')
+result = parser.process(u'這是一隻可愛的小花貓')
+for sentence in result['result']:
+    for term in traverse(sentence['tree']):
         print term['term'], term['pos']
 
