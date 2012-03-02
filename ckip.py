@@ -103,3 +103,10 @@ class CKIPSegmenter(CKIPClient):
 
         return terms
 
+class CKIPParser(CKIPClient):
+    _SERVER_IP = '140.109.19.112'
+    _SERVER_PORT = 8000
+
+    def _extract_sentence(self, sentence):
+        return sentence
+
