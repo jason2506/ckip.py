@@ -9,7 +9,7 @@ To access the Chinese segmentation service, you must [register first](http://cki
     from ckip import CKIPSegmenter
 
     client = CKIPSegmenter('YOUR USERNAME', 'YOUR PASSWORD')
-    result = client.segment_text(u'這是一隻可愛的小花貓')
+    result = client.process(u'這是一隻可愛的小花貓')
     for sentence in result['result']:
         for (term, pos) in sentence:
             print term, pos

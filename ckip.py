@@ -69,7 +69,7 @@ class CKIPClient(object):
     def _extract_terms(self, sentence):
         raise NotImplementedError()
 
-    def segment_text(self, text):
+    def process(self, text):
         tree = self.__build_request_xml(text)
         msg = tostring(tree, encoding=self._ENCODING, xml_declaration=True)
 
