@@ -87,7 +87,7 @@ class CKIPClient(object):
 
         return result
 
-class CKIPChineseSegmenter(CKIPClient):
+class CKIPSegmenter(CKIPClient):
     _SERVER_IP = '140.109.19.104'
     _SERVER_PORT = 1501
 
