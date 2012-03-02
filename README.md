@@ -6,9 +6,9 @@ To access the Chinese segmentation service, you must [register first](http://cki
 
 ## Usage
 
-    from ckip import CKIPClient
+    from ckip import CKIPChineseSegmenter
 
-    client = CKIPClient('YOUR USERNAME', 'YOUR PASSWORD')
+    client = CKIPChineseSegmenter('YOUR USERNAME', 'YOUR PASSWORD')
     result = client.segment_text(u'這是一隻可愛的小花貓')
     for sentence in result['result']:
         for (term, pos) in sentence:

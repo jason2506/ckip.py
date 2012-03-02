@@ -26,6 +26,7 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+from abc import ABCMeta, abstractmethod
 from contextlib import closing
 from re import compile
 from socket import socket, AF_INET, SOCK_STREAM
@@ -34,10 +35,10 @@ from lxml.etree import tostring, fromstring
 from lxml.builder import E
 
 class CKIPClient(object):
-    __SERVER_IP = '140.109.19.104'
-    __SERVER_PORT = 1501
-    __BUFFER_SIZE = 4096
-    __ENCODING = 'big5'
+    __metaclass__ = ABCMeta
+
+    _BUFFER_SIZE = 4096
+    _ENCODING = 'big5'
 
     def __init__(self, username, password):
         self.username = username
@@ -52,19 +53,45 @@ class CKIPClient(object):
 
     def __send_and_recv(self, msg):
         with closing(socket(AF_INET, SOCK_STREAM)) as s:
-            s.connect((self.__SERVER_IP, self.__SERVER_PORT))
+            s.connect((self._SERVER_IP, self._SERVER_PORT))
             s.sendall(msg)
 
             result = ''
             done = False
             while not done:
-                chunk = s.recv(self.__BUFFER_SIZE)
+                chunk = s.recv(self._BUFFER_SIZE)
                 result += chunk
                 done = result.find('</wordsegmentation>') > -1
 
         return result
 
-    def __extract_terms(self, sentence):
+    @abstractmethod
+    def _extract_terms(self, sentence):
+        raise NotImplementedError()
+
+    def segment_text(self, text):
+        tree = self.__build_request_xml(text)
+        msg = tostring(tree, encoding=self._ENCODING, xml_declaration=True)
+
+        result_msg = self.__send_and_recv(msg)
+        result_tree = fromstring(result_msg.decode(self._ENCODING))
+
+        status = result_tree.find('./processstatus')
+        sentences = result_tree.iterfind('./result/sentence')
+        result = {
+            'status': status.text,
+            'status_code': status.get('code'),
+            'result': [self._extract_terms(sentence.text)
+                for sentence in sentences]
+        }
+
+        return result
+
+class CKIPChineseSegmenter(CKIPClient):
+    _SERVER_IP = '140.109.19.104'
+    _SERVER_PORT = 1501
+
+    def _extract_terms(self, sentence):
         pattern = compile('^(.*)\(([^(]+)\)$')
         raw_terms = sentence.split()
 
@@ -75,22 +102,4 @@ class CKIPClient(object):
             terms.append(term)
 
         return terms
-
-    def segment_text(self, text):
-        tree = self.__build_request_xml(text)
-        msg = tostring(tree, encoding=self.__ENCODING, xml_declaration=True)
-
-        result_msg = self.__send_and_recv(msg)
-        result_tree = fromstring(result_msg.decode(self.__ENCODING))
-
-        status = result_tree.find('./processstatus')
-        sentences = result_tree.iterfind('./result/sentence')
-        result = {
-            'status': status.text,
-            'status_code': status.get('code'),
-            'result': [self.__extract_terms(sentence.text)
-                for sentence in sentences]
-        }
-
-        return result
 
