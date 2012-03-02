@@ -35,7 +35,6 @@ Like the usage example of the `CKIPSegmenter` class, you must import the `CKIPPa
     for sentence in result['result']:
         for term in traverse(sentence['tree']):
             print term['term'], term['pos']
-        from ckip import CKIPSegmenter
 
 ## License
 
