@@ -66,7 +66,7 @@ class CKIPClient(object):
         return result
 
     @abstractmethod
-    def _extract_terms(self, sentence):
+    def _extract_sentence(self, sentence):
         raise NotImplementedError()
 
     def process(self, text):
@@ -81,7 +81,7 @@ class CKIPClient(object):
         result = {
             'status': status.text,
             'status_code': status.get('code'),
-            'result': [self._extract_terms(sentence.text)
+            'result': [self._extract_sentence(sentence.text)
                 for sentence in sentences]
         }
 
@@ -91,7 +91,7 @@ class CKIPSegmenter(CKIPClient):
     _SERVER_IP = '140.109.19.104'
     _SERVER_PORT = 1501
 
-    def _extract_terms(self, sentence):
+    def _extract_sentence(self, sentence):
         pattern = compile('^(.*)\(([^(]+)\)$')
         raw_terms = sentence.split()
 
