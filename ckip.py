@@ -34,6 +34,67 @@ from socket import socket, AF_INET, SOCK_STREAM
 from lxml.etree import tostring, fromstring
 from lxml.builder import E
 
+def _construct_parsing_tree(tree_text):
+    parent_node = None
+    current_node = {}
+
+    node_queue = []
+    text = u''
+    is_head = False
+    for char in tree_text:
+        if char == '(':
+            node_queue.append(parent_node)
+
+            current_node['child'] = []
+            current_node['pos'] = text
+            text = u''
+
+            parent_node = current_node
+            current_node = {}
+
+        elif char == ')':
+            if is_head:
+                parent_node['head'] = current_node
+                is_head = False
+
+            if len(text) > 0:
+                current_node['term'] = text
+                text = u''
+
+            parent_node['child'].append(current_node)
+
+            if is_head:
+                parent_node['head'] = current_node
+                is_head = False
+
+            current_node = parent_node
+            parent_node = node_queue.pop()
+
+        elif char == ':':
+            if text == 'head':
+                is_head = True
+            else:
+                current_node['pos'] = text
+
+            text = u''
+
+        elif char == '|':
+            if is_head:
+                parent_node['head'] = current_node
+                is_head = False
+
+            if len(text) > 0:
+                current_node['term'] = text
+                text = u''
+
+            parent_node['child'].append(current_node)
+            current_node = {}
+
+        else:
+            text += char
+
+    return current_node
+
 class CKIPClient(object):
     __metaclass__ = ABCMeta
 
@@ -108,5 +169,23 @@ class CKIPParser(CKIPClient):
     _SERVER_PORT = 8000
 
     def _extract_sentence(self, sentence):
-        return sentence
+        pattern = compile('^#\d+:1\.\[0\] (.+)#(.*)$')
+        match = pattern.match(sentence)
+
+        tree_text = match.group(1)
+        tree = _construct_parsing_tree(tree_text)
+
+        raw_punctuation = match.group(2)
+        punctuation = None
+        if len(raw_punctuation) > 0:
+            pattern = compile('^(.+)\(([^(]+)\)$')
+            match = pattern.match(raw_punctuation)
+            punctuation = (match.group(1), match.group(2))
+
+        result = {
+            'tree': tree,
+            'punctuation': punctuation
+        }
+
+        return result
 
