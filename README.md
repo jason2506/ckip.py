@@ -22,7 +22,7 @@ To access the Chinese segmentation service, you must [register first](http://cki
         for term in sentence:
             print term['term'], term['pos']
 
-    segmenter = CKIPSegmenter('YOUR USERNAME', 'YOUR PASSWORD')
+    parser = CKIPParser('YOUR USERNAME', 'YOUR PASSWORD')
     result = parser.process(u'這是一隻可愛的小花貓')
     for sentence in result['result']:
         for term in traverse(sentence['tree']):
