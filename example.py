@@ -28,22 +28,31 @@
 
 from ckip import CKIPSegmenter, CKIPParser
 
-def traverse(node):
-    if 'child' in node:
-        for child in node['child']:
+# Helper function to traverse all leaf node of the given tree root
+def traverse(root):
+    if 'child' in root:
+        for child in root['child']:
             for leaf in traverse(child):
                 yield leaf
     else:
-        yield node
+        yield root
 
+# Usage example of the CKIPSegmenter class
 segmenter = CKIPSegmenter('YOUR USERNAME', 'YOUR PASSWORD')
 result = segmenter.process(u'這是一隻可愛的小花貓')
+if result['status_code'] != '0':
+    print 'Process Failure: ' + result['status']
+
 for sentence in result['result']:
     for term in sentence:
         print term['term'], term['pos']
 
+# Usage example of the CKIPParser class
 parser = CKIPParser('YOUR USERNAME', 'YOUR PASSWORD')
 result = parser.process(u'這是一隻可愛的小花貓')
+if result['status_code'] != '0':
+    print 'Process Failure: ' + result['status']
+
 for sentence in result['result']:
     for term in traverse(sentence['tree']):
         print term['term'], term['pos']
