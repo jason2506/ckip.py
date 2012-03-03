@@ -71,7 +71,7 @@ def _construct_parsing_tree(tree_text):
             parent_node = node_queue.pop()
 
         elif char == ':':
-            if text == 'head':
+            if text == 'Head':
                 is_head = True
             else:
                 current_node['pos'] = text
