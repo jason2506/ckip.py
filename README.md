@@ -60,10 +60,12 @@ The sentence in the result of the `CKIPParser.process()`, on the other hand, is 
         'punctuation': None,
         'tree':
             {
+                'head': {'term': u'是', 'pos': u'Vt'},
                 'pos': u'S',
                 'child':
                     [
                         {
+                            'head': {'term': u'這', 'pos': u'DET'},
                             'pos': u'NP',
                             'child':
                                 [
@@ -72,14 +74,16 @@ The sentence in the result of the `CKIPParser.process()`, on the other hand, is 
                         },
                         {'term': u'是', 'pos': u'Vt'},
                         {
+                            'head': {'term': u'花貓', 'pos': u'N'},
                             'pos': u'NP',
                             'child':
                                  [
                                      {'term': u'一隻', 'pos': u'DM'},
                                      {
+                                         'head': {'term': u'的', 'pos': u'T'},
                                          'pos': u'V‧的',
                                          'child':
-                                             [
+                                             [                                             
                                                  {'term': u'可愛', 'pos': u'Vi'},
                                                  {'term': u'的', 'pos': u'T'}
                                              ]
@@ -98,15 +102,15 @@ The `punctuation` is the punctuation that used to separate from other sentences.
 
 Here is a simple example for traversing all leaf nodes (each of these is a Chinese term) of the parsing tree:
 
-    def traverse(node):
-        if 'child' in node:
-            for child in node['child']:
+    def traverse(root):
+        if 'child' in root:
+            for child in root['child']:
                 for leaf in traverse(child):
                     yield leaf
         else:
-            yield node
+            yield root
 
-    for sentence in result['result']:
+    for sentence in parsed_result['result']:
         for term in traverse(sentence['tree']):
             print term['term'], term['pos']
 
