@@ -46,7 +46,7 @@ The `status` and the `status_code` indicate whether the process is success or no
     if segmented_result['status_code'] != '0':
         print 'Process Failed: ' + segmented_result['status']
 
-And the `result` is the a list of objects that represent each sentence.
+And the `result` is a list of objects that represent each sentence.
 
 Takes the result of the `CKIPSegmenter.process()` for example, the sentence is represented by a list of dictionary. Each dictionary contains the Chinese term and the corresponding part-of-speech:
 

@@ -28,7 +28,7 @@
 
 from ckip import CKIPSegmenter, CKIPParser
 
-# Helper function to traverse all leaf node of the given tree root
+# Helper function to traverse all leaf nodes of the given tree root
 def traverse(root):
     if 'child' in root:
         for child in root['child']:
