@@ -96,7 +96,7 @@ The sentence in the result of the `CKIPParser.process()`, on the other hand, is 
             }
     }
 
-The `punctuation` is the punctuation that used to separate from other sentences.
+The `punctuation` is a dictionary like `{'term': u'。', 'pos': u'PERIODCATEGORY'}`, which represents the symbol that used to separate from next sentence, or `None` if there was no punctuation in this sentence.
 
 `tree` is a dictionary that represent the tree structure. Each node has its own part-of-speech, and its children nodes (if this node is an internal node) or term (if this node is a leaf node).
 
