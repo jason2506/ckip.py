@@ -153,7 +153,7 @@ class CKIPSegmenter(CKIPClient):
     _SERVER_PORT = 1501
 
     def _extract_sentence(self, sentence):
-        pattern = compile('^(.+)\(([^(]+)\)$')
+        pattern = compile('^(.*)\(([^(]+)\)$')
         raw_terms = sentence.split()
 
         terms = []
@@ -182,7 +182,7 @@ class CKIPParser(CKIPClient):
         raw_punctuation = match.group(2)
         punctuation = None
         if len(raw_punctuation) > 0:
-            pattern = compile('^(.+)\(([^(]+)\)$')
+            pattern = compile('^(.*)\(([^(]+)\)$')
             match = pattern.match(raw_punctuation)
             punctuation = {
                 'term': match.group(1),
