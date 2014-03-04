@@ -10,7 +10,6 @@
 
 from __future__ import unicode_literals
 
-from abc import ABCMeta, abstractmethod
 from contextlib import closing
 from re import compile
 from socket import socket, AF_INET, SOCK_STREAM
@@ -82,8 +81,6 @@ def _construct_parsing_tree(tree_text):
 
 
 class CKIPClient(object):
-    __metaclass__ = ABCMeta
-
     _BUFFER_SIZE = 4096
     _ENCODING = 'big5'
 
@@ -112,7 +109,6 @@ class CKIPClient(object):
 
         return result
 
-    @abstractmethod
     def _extract_sentence(self, sentence):
         raise NotImplementedError()
 
